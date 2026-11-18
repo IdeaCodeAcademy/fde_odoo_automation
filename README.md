@@ -73,6 +73,15 @@ Project context and verified work summaries are saved using ECC unified-memory.
 Local project memory lives in `.ecc/memory/project/` and is ignored by Git;
 `AGENTS.md` and this README retain shared project rules and instructions.
 
+## Included addons
+
+`ica_web_responsive` provides responsive backend navigation and per-user light,
+dark, and system themes. Imported from `IdeaCodeAcademy/odoo_app_store`, branch
+`20.0`, revision `8b3fc76fe9599b0aba693866f4f52165a330530e` (LGPL-3).
+Upstream implementation and presentation assets are preserved; local Python
+tests cover theme preferences, address recomputation, and coordinate updates.
+Dependencies `web` and `base_setup` are included in the Community image.
+See `addons/ica_web_responsive/README.rst` for configuration and usage.
 ## GitHub Project automation
 
 See [the task runner plan](docs/github-project-runner-plan.md) and
