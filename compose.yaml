@@ -29,7 +29,7 @@ services:
       - web-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
       - ./config/odoo.conf:/etc/odoo/odoo.conf:ro
-    command: [odoo, --dev=reload,qweb,xml]
+    command: ["odoo", "--dev=reload,qweb,xml"]
     restart: unless-stopped
 volumes:
   db-data:
