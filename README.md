@@ -82,3 +82,10 @@ Upstream implementation and presentation assets are preserved; local Python
 tests cover theme preferences, address recomputation, and coordinate updates.
 Dependencies `web` and `base_setup` are included in the Community image.
 See `addons/ica_web_responsive/README.rst` for configuration and usage.
+## GitHub Project automation
+
+See [the task runner plan](docs/github-project-runner-plan.md) and
+[integration setup/current limits](docs/automation-setup.md). Project preflight
+and Telegram adapter helpers are available; automatic Cloud dispatch and the
+hourly scheduler are not enabled. Run `python3 -m automation preflight` to
+check Project #2 access without starting or modifying tasks.
