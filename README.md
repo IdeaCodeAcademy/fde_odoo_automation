@@ -72,3 +72,11 @@ for `20.0-DEV` to require the `Odoo 20.0 unit tests` status check.
 Project context and verified work summaries are saved using ECC unified-memory.
 Local project memory lives in `.ecc/memory/project/` and is ignored by Git;
 `AGENTS.md` and this README retain shared project rules and instructions.
+
+## GitHub Project automation
+
+See [the task runner plan](docs/github-project-runner-plan.md) and
+[integration setup/current limits](docs/automation-setup.md). Project preflight
+and Telegram adapter helpers are available; automatic Cloud dispatch and the
+hourly scheduler are not enabled. Run `python3 -m automation preflight` to
+check Project #2 access without starting or modifying tasks.
