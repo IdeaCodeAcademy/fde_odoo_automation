@@ -1,0 +1,1 @@
+# fde_odoo_automation
