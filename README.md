@@ -50,3 +50,25 @@ PostgreSQL is accessible only within the Compose network; HTTP is bound to local
 
 References: [official Docker image](https://hub.docker.com/_/odoo),
 [Odoo 20 source requirements](https://www.odoo.com/documentation/20.0/administration/on_premise/source.html).
+
+## Contributions and CI
+
+Follow [Odoo 20.0 Git guidelines](https://www.odoo.com/documentation/20.0/contributing/development/git_guidelines.html)
+and the repository rules in `AGENTS.md`. Example new-module commit:
+`[ADD] module_name: explain the purpose` with a body explaining why it is needed.
+
+Open feature pull requests against `20.0-DEV`. GitHub Actions runs
+`Odoo 20.0 unit tests` on every such PR, on pushes to the development branch,
+and on manual dispatch. No path filter skips documentation-only PRs.
+All installable modules under `addons/` are installed into a fresh PostgreSQL
+database and their standard Odoo Python tests run. Modules must include
+`tests/test_*.py` imported by `tests/__init__.py`; test failures fail CI.
+Until custom modules exist, an Odoo base unit-test smoke suite runs instead.
+Logs are uploaded as a workflow artifact, including on failure.
+
+To enforce passing CI before merging, configure the branch protection/ruleset
+for `20.0-DEV` to require the `Odoo 20.0 unit tests` status check.
+
+Project context and verified work summaries are saved using ECC unified-memory.
+Local project memory lives in `.ecc/memory/project/` and is ignored by Git;
+`AGENTS.md` and this README retain shared project rules and instructions.

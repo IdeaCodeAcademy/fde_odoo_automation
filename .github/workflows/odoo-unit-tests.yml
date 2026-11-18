@@ -1,0 +1,69 @@
+name: Odoo unit tests
+
+on:
+  pull_request:
+    branches: [20.0-DEV]
+  push:
+    branches: [20.0-DEV]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Odoo 20.0 unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U odoo -d postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover modules and validate test imports
+        id: modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          modules=$(python3 scripts/ci_modules.py)
+          echo "names=$modules" >> "$GITHUB_OUTPUT"
+      - name: Run Odoo unit tests in a fresh database
+        env:
+          MODULES: ${{ steps.modules.outputs.names }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          install_modules=base
+          tags='/base:TestIrConfigParameter'
+          if [[ -n "$MODULES" ]]; then
+            install_modules="$install_modules,$MODULES"
+            IFS=',' read -ra modules <<< "$MODULES"
+            for module in "${modules[@]}"; do
+              tags="$tags,/$module"
+            done
+          else
+            echo 'No custom modules yet; running Odoo base unit-test smoke suite.'
+          fi
+          docker run --rm --network host \
+            -e HOST=127.0.0.1 -e PORT=5432 -e USER=odoo -e PASSWORD=ci-only-password \
+            -v "$PWD/addons:/mnt/extra-addons:ro" \
+            odoo:20.0 odoo \
+            --database=fde_ci --init="$install_modules" \
+            --test-tags="$tags" --stop-after-init --no-http \
+            --max-cron-threads=0 --log-level=test 2>&1 | tee odoo-tests.log
+      - name: Upload test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: odoo-unit-test-log
+          path: odoo-tests.log
+          if-no-files-found: ignore
