@@ -11,8 +11,9 @@ python3 "$fde_project_root/scripts/sync_cloud_skills.py" \
   --target "$fde_cloud_root/odoo/.agents/skills"
 
 # ECC uses the native plugin lifecycle; never copy its skill directories.
+# The marketplace source is a configured local checkout, not a remote
+# marketplace to upgrade. Its revision is managed by the Cloud environment.
 codex plugin marketplace add "$fde_cloud_root/ecc"
-codex plugin marketplace upgrade ecc
 codex plugin add ecc@ecc
 codex plugin list --json
 

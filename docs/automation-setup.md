@@ -41,8 +41,12 @@ Messages report queue checks, not unverified Cloud runner health.
 earlier inline setup script. It discovers every `*/SKILL.md` under the configured
 Odoo checkout; it does not assume there are exactly five skills. Newly added
 skills are copied on the next setup execution. Existing differing skills are
-preserved and require review instead of being overwritten. ECC is refreshed
-through the native marketplace/plugin lifecycle, with Codex-owned hook trust.
+preserved and require review instead of being overwritten. ECC is installed
+through native `marketplace add` and `plugin add`, with Codex-owned hook trust.
+The marketplace is a local configured checkout: do not run `marketplace upgrade`
+against it. Update its configured source revision when an ECC update is wanted,
+then rerun setup. The user verified the earlier add/install flow and dependency
+checks in Cloud; the extra upgrade command failed and has been removed.
 
 Once this change is merged and the environment's main project checkout includes
 it, configure the Environment install script to run:
