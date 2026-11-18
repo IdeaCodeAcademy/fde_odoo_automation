@@ -1,0 +1,6 @@
+[options]
+admin_passwd = replace-with-database-manager-password
+addons_path = /mnt/extra-addons
+data_dir = /var/lib/odoo
+http_port = 8069
+proxy_mode = False
